@@ -26,8 +26,13 @@ public class AppController {
 	
 	@Autowired
 	MessageSource messageSource;
-
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	
+	@RequestMapping(value = {"/","/index"})
+    public String index()
+    {
+        return "index";
+    }
+	@RequestMapping(value = {"/list" }, method = RequestMethod.GET)
 	public String listEmployees(ModelMap model) {
 		System.out.println("Coming here");
 		return "upload";
