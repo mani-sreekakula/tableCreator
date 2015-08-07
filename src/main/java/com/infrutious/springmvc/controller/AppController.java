@@ -32,13 +32,13 @@ public class AppController {
     {
         return "index";
     }
-	@RequestMapping(value = {"/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = {"/list.action" }, method = RequestMethod.GET)
 	public String listEmployees(ModelMap model) {
 		System.out.println("Coming here");
 		return "upload";
 	}
 	
-	@RequestMapping(value = { "/parseExcel" }, method = RequestMethod.GET,produces = "application/json; charset=utf-8")
+	@RequestMapping(value = { "/parseExcel.action" }, method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String listEmployees(@RequestParam String filePath) {
 		try{
@@ -49,7 +49,7 @@ public class AppController {
 		}
 	}
 	
-	@RequestMapping(value = { "/dropandCreate" }, method = RequestMethod.GET,produces = "application/json; charset=utf-8")
+	@RequestMapping(value = { "/dropandCreate.action" }, method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String dropAndCreate(@RequestParam String tableName) {
 		try{
@@ -63,7 +63,7 @@ public class AppController {
 		}
 	}
 	
-	@RequestMapping(value = { "/upload" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/upload.action" }, method = RequestMethod.POST)
 	public String uploadExcel(@RequestParam MultipartFile fileToUpload,ModelMap model) {
 		try{
 			System.out.println("Entered");
