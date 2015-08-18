@@ -2,26 +2,27 @@ package com.infrutious.springmvc.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class ReturnData implements Serializable{
 
-	private List<String> headerFields;
+	private List<HeaderData> headerFields;
 	
-	private List<List<String>> data;
+	private List<Map<String,String>> data;
 
-	public List<String> getHeaderFields() {
+	public List<HeaderData> getHeaderFields() {
 		return headerFields;
 	}
 
-	public void setHeaderFields(List<String> headerFields) {
+	public void setHeaderFields(List<HeaderData> headerFields) {
 		this.headerFields = headerFields;
 	}
 
-	public List<List<String>> getData() {
+	public List<Map<String, String>> getData() {
 		return data;
 	}
 
-	public void setData(List<List<String>> data) {
+	public void setData(List<Map<String, String>> data) {
 		this.data = data;
 	}
 	

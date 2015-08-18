@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
-import com.infrutious.springmvc.dto.ReturnData;
 import com.infrutious.springmvc.logic.ExcelParser;
 import com.infrutious.springmvc.service.CustomService;
 import com.infrutious.springmvc.util.DBUtil;
+import com.infrutious.springmvc.util.DataFormatter;
 
 @Controller
 @RequestMapping("/")
@@ -44,11 +44,8 @@ public class AppController {
 	@ResponseBody
 	public String listEmployees(@RequestParam String filePath) {
 		try{
-			ReturnData returnData = new ReturnData();
 			List<List<String>> data = ExcelParser.parse(filePath);
-			returnData.setHeaderFields(data.get(0));
-			returnData.setData(data.subList(1, data.size()));
-			return new Gson().toJson(returnData );
+			return DataFormatter.formatToJson(data);
 		} catch (Exception e) {
 			return null;
 		}
@@ -71,17 +68,14 @@ public class AppController {
 	@RequestMapping(value = { "/upload.action" }, method = RequestMethod.POST)
 	public @ResponseBody String uploadExcel(@RequestParam MultipartFile fileToUpload,ModelMap model) {
 		try{
-			ReturnData returnData = new ReturnData();
 			System.out.println("Entered");
 			String fileName = fileToUpload.getOriginalFilename().substring(0,fileToUpload.getOriginalFilename().lastIndexOf("."));
 			System.out.println("File Name:"+fileName);
 			List<List<String>> data = ExcelParser.parse(fileToUpload.getInputStream());
 			model.addAttribute("data", data);
 			model.addAttribute("tableName", fileName);
-			returnData.setHeaderFields(data.get(0));
-			returnData.setData(data.subList(1, data.size()));
 //			return "upload";
-			return new Gson().toJson(returnData );
+			return DataFormatter.formatToJson(data);
 		} catch (Exception e) {
 			return null;
 		}
