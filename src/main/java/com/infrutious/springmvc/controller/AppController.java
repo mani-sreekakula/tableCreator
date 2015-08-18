@@ -47,7 +47,7 @@ public class AppController {
 			ReturnData returnData = new ReturnData();
 			List<List<String>> data = ExcelParser.parse(filePath);
 			returnData.setHeaderFields(data.get(0));
-			returnData.setData(data.subList(1, data.size()-1));
+			returnData.setData(data.subList(1, data.size()));
 			return new Gson().toJson(returnData );
 		} catch (Exception e) {
 			return null;
@@ -79,7 +79,7 @@ public class AppController {
 			model.addAttribute("data", data);
 			model.addAttribute("tableName", fileName);
 			returnData.setHeaderFields(data.get(0));
-			returnData.setData(data.subList(1, data.size()-1));
+			returnData.setData(data.subList(1, data.size()));
 //			return "upload";
 			return new Gson().toJson(returnData );
 		} catch (Exception e) {
