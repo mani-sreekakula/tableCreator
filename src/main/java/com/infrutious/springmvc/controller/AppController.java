@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
+import com.infrutious.springmvc.dto.ReturnData;
 import com.infrutious.springmvc.logic.ExcelParser;
 import com.infrutious.springmvc.service.CustomService;
 import com.infrutious.springmvc.util.DBUtil;
@@ -26,25 +27,34 @@ public class AppController {
 	
 	@Autowired
 	MessageSource messageSource;
-
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	
+	@RequestMapping(value = {"/","/index"})
+    public String index()
+    {
+		System.out.println("Came inside");
+        return "index";
+    }
+	@RequestMapping(value = {"/list.action" }, method = RequestMethod.GET)
 	public String listEmployees(ModelMap model) {
 		System.out.println("Coming here");
 		return "upload";
 	}
 	
-	@RequestMapping(value = { "/parseExcel" }, method = RequestMethod.GET,produces = "application/json; charset=utf-8")
+	@RequestMapping(value = { "/parseExcel.action" }, method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String listEmployees(@RequestParam String filePath) {
 		try{
+			ReturnData returnData = new ReturnData();
 			List<List<String>> data = ExcelParser.parse(filePath);
-			return new Gson().toJson(data );
+			returnData.setHeaderFields(data.get(0));
+			returnData.setData(data.subList(1, data.size()-1));
+			return new Gson().toJson(returnData );
 		} catch (Exception e) {
 			return null;
 		}
 	}
 	
-	@RequestMapping(value = { "/dropandCreate" }, method = RequestMethod.GET,produces = "application/json; charset=utf-8")
+	@RequestMapping(value = { "/dropandCreate.action" }, method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String dropAndCreate(@RequestParam String tableName) {
 		try{
@@ -58,17 +68,20 @@ public class AppController {
 		}
 	}
 	
-	@RequestMapping(value = { "/upload" }, method = RequestMethod.POST)
-	public String uploadExcel(@RequestParam MultipartFile fileToUpload,ModelMap model) {
+	@RequestMapping(value = { "/upload.action" }, method = RequestMethod.POST)
+	public @ResponseBody String uploadExcel(@RequestParam MultipartFile fileToUpload,ModelMap model) {
 		try{
+			ReturnData returnData = new ReturnData();
 			System.out.println("Entered");
 			String fileName = fileToUpload.getOriginalFilename().substring(0,fileToUpload.getOriginalFilename().lastIndexOf("."));
 			System.out.println("File Name:"+fileName);
 			List<List<String>> data = ExcelParser.parse(fileToUpload.getInputStream());
 			model.addAttribute("data", data);
 			model.addAttribute("tableName", fileName);
-			return "upload";
-//			return new Gson().toJson(data );
+			returnData.setHeaderFields(data.get(0));
+			returnData.setData(data.subList(1, data.size()-1));
+//			return "upload";
+			return new Gson().toJson(returnData );
 		} catch (Exception e) {
 			return null;
 		}
